@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 User = get_user_model()
+TAGS_COLOR = '#ffffff'
 
 
 class Tag(models.Model):
@@ -15,7 +16,7 @@ class Tag(models.Model):
         'Цвет тега',
         max_length=7,
         unique=True,
-        default='#ffffff'
+        default=TAGS_COLOR
     )
     slug = models.SlugField('Slug тега', unique=True)
 
@@ -28,8 +29,8 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField('Название ингредиента', max_length=256,)
-    measurement_unit = models.CharField('Единица измерения', max_length=256,)
+    name = models.CharField('Название ингредиента', max_length=256)
+    measurement_unit = models.CharField('Единица измерения', max_length=256)
 
     class Meta:
         verbose_name = 'Ингредиент'
@@ -86,7 +87,7 @@ class Recipe(models.Model):
         ordering = ['-pub_date']
 
     def __str__(self):
-        return f'{self.name}'
+        return self.name
 
 
 class Favorite(models.Model):
@@ -141,8 +142,10 @@ class ShoppingCart(models.Model):
         verbose_name = 'Список покупок'
         verbose_name_plural = 'Списки покупок'
         constraints = [
-            models.UniqueConstraint(fields=['user', 'recipe'],
-                                    name='unique_cart_user')
+            models.UniqueConstraint(
+                fields=['user', 'recipe'],
+                name='unique_cart_user'
+            )
         ]
 
     def __str__(self):
@@ -175,8 +178,10 @@ class RecipeIngredient(models.Model):
         verbose_name = 'Ингредиент в рецепте'
         verbose_name_plural = 'Ингредиенты в рецепте'
         constraints = [
-            models.UniqueConstraint(fields=['ingredient', 'recipe'],
-                                    name='unique_ingredients_recipe')
+            models.UniqueConstraint(
+                fields=['ingredient', 'recipe'],
+                name='unique_ingredients_recipe'
+            )
         ]
 
     def __str__(self):

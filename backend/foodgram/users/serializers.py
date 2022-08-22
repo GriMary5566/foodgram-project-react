@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
-# from rest_framework.validators import UniqueTogetherValidator
 from rest_framework import serializers, status
+from djoser.serializers import UserCreateSerializer, UserSerializer
 
 from users.models import Follow
 
@@ -36,7 +36,7 @@ class FollowSerializer(serializers.ModelSerializer):
         return data
 
 
-class CustomUserSerializer(serializers.ModelSerializer):
+class EmailLoginUserSerializer(UserSerializer):
     is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
@@ -47,10 +47,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'username',
             'first_name',
             'last_name',
-            'password',
             'is_subscribed'
         )
-        extra_kwargs = {"password": {'write_only': True}}
         read_only_fields = ('id',)
 
     def get_is_subscribed(self, obj):
@@ -58,4 +56,23 @@ class CustomUserSerializer(serializers.ModelSerializer):
         if request is None or request.user.is_anonymous:
             return False
         user = request.user
-        return Follow.objects.filter(following=obj.id, user=user).exists()
+        return Follow.objects.filter(following=obj.id, user=user.id).exists()
+
+
+class EmailLoginUserCreateSerializer(UserCreateSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'first_name',
+            'last_name',
+            'email',
+            'username',
+            'password'
+        )
+        extra_kwargs = {
+            'email': {'required': True},
+            'username': {'required': True},
+            'password': {'required': True},
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+        }

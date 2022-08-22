@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class CustomUser(AbstractUser):
+class EmailLoginUser(AbstractUser):
     password = models.CharField(
         'Пароль',
         max_length=150,
@@ -38,7 +38,7 @@ class CustomUser(AbstractUser):
         return f'Пользователь {self.email}'
 
 
-User = CustomUser
+User = EmailLoginUser
 
 
 class Follow(models.Model):

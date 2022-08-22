@@ -1,14 +1,14 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import CustomUser, Follow
+from .models import EmailLoginUser, Follow
 
 
-class CustomUserAdmin(UserAdmin):
+class EmailLoginUserAdmin(UserAdmin):
     list_display = ('email', 'username')
     list_filter = ('email', 'username')
     search_fields = ('email', 'username')
 
 
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(EmailLoginUser, EmailLoginUserAdmin)
 admin.site.register(Follow)
