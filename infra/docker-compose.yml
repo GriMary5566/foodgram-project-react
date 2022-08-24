@@ -4,27 +4,26 @@ services:
   db:
     image: postgres:13.0-alpine    
     volumes:
-      - /var/lib/postgresql/data/    
+      - postgres_data:/var/lib/postgresql/data/    
     env_file:
-      - ../backend/foodgram/foodgram/.env
+      - ./.env
   
   backend:
     image: mary5566/diplom_foodgram:v1.08.2022
     restart: always
     volumes:      
-      - static_value:/app/static/
-      - media_value:/app/media/     
+      - static_value:/app/foodgram/static/
+      - media_value:/app/foodgram/media/
+      - redoc:/app/foodgram/docs/ 
     depends_on:
       - db
     env_file:
-      - ../backend/foodgram/foodgram/.env
+      - ./.env
   
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: mary5566/fronted_foodgram:v1.08.2022
     volumes:
-      - ../frontend/:/app/result_build/
+      - result_build:/app/result_build/build/
     depends_on:
       - backend
   
@@ -34,13 +33,18 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ../frontend/build:/usr/share/nginx/html/
-      - ../docs/:/usr/share/nginx/html/api/docs/
+      - result_build:/usr/share/nginx/html/
+      - redoc:/usr/share/nginx/html/api/docs/
       - static_value:/var/html/static/
       - media_value:/var/html/media/
     depends_on:
       - frontend
+    env_file:
+      - ./.env
 
 volumes:   
   static_value:
   media_value:
+  postgres_data:
+  result_build:
+  redoc:

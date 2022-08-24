@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
+from djoser.serializers import SetPasswordSerializer
 from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
@@ -27,6 +28,28 @@ class EmailLoginUserViewSet(UserViewSet):
         elif self.request.method == 'POST':
             return EmailLoginUserCreateSerializer
         return EmailLoginUserSerializer
+
+    @action(
+        methods=['post'],
+        permission_classes=(IsAuthenticated,),
+        detail=False
+    )
+    def set_password(self, request, **kwargs):
+        user = request.user
+        serializer = SetPasswordSerializer(
+            data=request.data, context={'request': request}
+        )
+        if serializer.is_valid():
+            user.set_password(
+                serializer.validated_data['new_password']
+            )
+            user.save()
+            return Response({'Пароль успешно изменен'})
+        else:
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
     @action(
         methods=['post', 'delete'],
