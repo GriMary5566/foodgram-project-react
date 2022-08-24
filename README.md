@@ -1,6 +1,8 @@
 # Проект Foodgram
 [workflow](https://github.com/GriMary5566/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
 
+[сайт проекта](http://51.250.100.222/
+
 
 ## Социальная сеть любителей кулинарии «Продуктовый помощник»
 
@@ -34,7 +36,7 @@ git clone https://github.com/GriMary5566/foodgram-project-react
 
 ```
 
-## Для работы с удаленным сервером:
+### Для работы с удаленным сервером:
 
 - Выполните вход на свой удаленный сервер
 
@@ -120,5 +122,5 @@ sudo docker-compose up -d --build
 
 ## Авторы проекта:
 
-- Команда Яндекс.Практикума
-- Григорьева Мария
+- Команда Яндекс.Практикума - фронтед
+- Григорьева Мария - бэкенд
