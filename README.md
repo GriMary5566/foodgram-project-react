@@ -1,4 +1,6 @@
 # Проект Foodgram
+[workflow](https://github.com/GriMary5566/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
+
 
 ## Социальная сеть любителей кулинарии «Продуктовый помощник»
 
